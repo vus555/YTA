@@ -3,281 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Озвучка текста</title>
+    <title>Озвучка</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
             background: #0a0a0f;
             color: white;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 16px;
-        }
-        
-        .container {
-            background: #1a1a2e;
-            border-radius: 32px;
-            padding: 24px;
-            max-width: 480px;
-            width: 100%;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
-            border: 1px solid #2a2a3e;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        
-        .icon {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, #ff6b9d, #c44569);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 45px;
-            margin: 0 auto 15px;
-            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
-        }
-        
-        h2 {
-            font-size: 28px;
-            margin-bottom: 5px;
-            color: #ff6b9d;
-        }
-        
-        .subtitle {
-            color: #a0a0b8;
-            font-size: 14px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .label {
-            display: block;
-            color: #a0a0b8;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 8px;
+            font-family: Arial;
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
         }
         
         textarea {
             width: 100%;
-            height: 140px;
-            padding: 18px;
-            background: #0a0a0f;
-            border: 2px solid #2a2a3e;
-            border-radius: 24px;
+            height: 100px;
+            padding: 15px;
+            background: #1a1a2e;
             color: white;
+            border: 1px solid #2a2a3e;
+            border-radius: 10px;
             font-size: 16px;
-            resize: vertical;
-            font-family: inherit;
-            transition: all 0.3s;
+            margin-bottom: 15px;
         }
         
-        textarea:focus {
-            outline: none;
-            border-color: #ff6b9d;
-            box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.15);
-        }
-        
-        textarea::placeholder {
-            color: #4a4a5e;
-        }
-        
-        .volume-group {
-            background: #0a0a0f;
-            border: 2px solid #2a2a3e;
-            border-radius: 24px;
-            padding: 18px;
-            margin-bottom: 20px;
-        }
-        
-        .volume-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        
-        .volume-value {
-            color: #ff6b9d;
-            font-weight: bold;
-            font-size: 15px;
-        }
-        
-        input[type="range"] {
+        button {
             width: 100%;
-            -webkit-appearance: none;
-            height: 10px;
-            background: #2a2a3e;
-            border-radius: 25px;
-            outline: none;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, #ff6b9d, #c44569);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 25px rgba(255, 107, 157, 0.6);
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 18px;
-            font-size: 18px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s;
-            margin-bottom: 12px;
-        }
-        
-        .btn-speak {
-            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            padding: 15px;
+            background: #6c5ce7;
             color: white;
-            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
-        }
-        
-        .btn-speak:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.6);
-        }
-        
-        .btn-speak:active {
-            transform: scale(0.96);
-        }
-        
-        .btn-stop {
-            background: transparent;
-            color: #ff6b6b;
-            border: 2px solid #ff6b6b;
-            border-radius: 50px;
-        }
-        
-        .btn-stop:hover {
-            background: rgba(255, 107, 107, 0.1);
-        }
-        
-        .status {
-            text-align: center;
-            font-size: 14px;
-            margin-top: 15px;
-            display: none;
-            padding: 12px;
-            border-radius: 50px;
-        }
-        
-        .status.show {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="icon">🎙️</div>
-            <h2>Озвучка текста</h2>
-            <p class="subtitle">Мягкий приятный женский голос</p>
-        </div>
-        
-        <div class="form-group">
-            <label class="label">Введите текст</label>
-            <textarea id="text" placeholder="Введите текст для озвучки..."></textarea>
-        </div>
-        
-        <div class="volume-group">
-            <div class="volume-header">
-                <label class="label" style="margin: 0;">🔊 Громкость</label>
-                <span class="volume-value" id="volumeValue">100%</span>
-            </div>
-            <input type="range" id="volume" min="0" max="100" step="5" value="100">
-        </div>
-        
-        <button class="btn btn-speak" onclick="speak()">🔊 Озвучить</button>
-        <button class="btn btn-stop" onclick="stop()">⏹️ Стоп</button>
-        
-        <div class="status" id="status"></div>
-    </div>
+    <h2>Озвучка текста</h2>
+    
+    <textarea id="text" placeholder="Введите текст..."></textarea>
+    
+    <button onclick="speak()">Озвучить</button>
     
     <script>
-        document.getElementById('volume').oninput = function() {
-            document.getElementById('volumeValue').textContent = this.value + '%';
-        };
-        
-        function isEnglish(text) {
-            return /[a-zA-Z]/.test(text);
-        }
-        
         function speak() {
             speechSynthesis.cancel();
             
-            var text = document.getElementById('text').value.trim();
+            var text = document.getElementById('text').value;
             
             if (!text) {
-                showStatus('Введите текст!', '#ff6b6b');
+                alert('Введите текст!');
                 return;
             }
             
-            var volume = parseInt(document.getElementById('volume').value) / 100;
-            
             var utterance = new SpeechSynthesisUtterance(text);
-            
-            if (isEnglish(text)) {
-                utterance.lang = 'en-US';
-            } else {
-                utterance.lang = 'ru-RU';
-            }
-            
+            utterance.lang = 'ru-RU';
             utterance.pitch = 1.35;
             utterance.rate = 0.95;
-            utterance.volume = volume;
-            
-            showStatus('🔊 Озвучивание...', '#ff6b9d');
-            
-            utterance.onend = function() {
-                showStatus('✅ Готово!', '#00b894');
-            };
-            
-            utterance.onerror = function() {
-                showStatus('❌ Ошибка', '#ff6b6b');
-            };
             
             speechSynthesis.speak(utterance);
-        }
-        
-        function stop() {
-            speechSynthesis.cancel();
-            showStatus('⏹️ Остановлено', '#a0a0b8');
-        }
-        
-        function showStatus(message, color) {
-            var status = document.getElementById('status');
-            status.textContent = message;
-            status.style.color = color;
-            status.classList.add('show');
         }
     </script>
 </body>
