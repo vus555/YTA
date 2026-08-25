@@ -2,1243 +2,283 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI Video Creator - Smart Video Processing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Озвучка текста</title>
     <style>
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-card: #1a1a2e;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b8;
-            --accent: #6c5ce7;
-            --accent-hover: #7c6cf0;
-            --success: #00b894;
-            --danger: #ff6b6b;
-            --border: #2a2a3e;
-            --radius: 16px;
-            --radius-sm: 10px;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background: #0a0a0f;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            padding: 16px;
         }
-
-        .app-container {
+        
+        .container {
+            background: #1a1a2e;
+            border-radius: 32px;
+            padding: 24px;
+            max-width: 480px;
             width: 100%;
-            max-width: 420px;
-            min-height: 100vh;
-            background: var(--bg-primary);
-            position: relative;
-            overflow-y: auto;
-            padding: 20px;
-            animation: fadeIn 0.5s ease;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            border: 1px solid #2a2a3e;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        
         .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-            animation: slideDown 0.6s ease;
+            text-align: center;
+            margin-bottom: 25px;
         }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-
-        .status-badge {
-            background: var(--bg-card);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            color: var(--success);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--success);
+        
+        .icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+            margin: 0 auto 15px;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
         }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        
+        h2 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: #ff6b9d;
         }
-
-        .screen {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        .input-section {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .input-section:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(108, 92, 231, 0.15);
-        }
-
-        .section-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        .text-input {
-            width: 100%;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 14px;
-            color: var(--text-primary);
+        
+        .subtitle {
+            color: #a0a0b8;
             font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .label {
+            display: block;
+            color: #a0a0b8;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 18px;
+            background: #0a0a0f;
+            border: 2px solid #2a2a3e;
+            border-radius: 24px;
+            color: white;
+            font-size: 16px;
             resize: vertical;
-            min-height: 120px;
             font-family: inherit;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
-
-        .text-input:focus {
+        
+        textarea:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            border-color: #ff6b9d;
+            box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.15);
         }
-
-        .text-input::placeholder {
+        
+        textarea::placeholder {
             color: #4a4a5e;
         }
-
-        .upload-area {
-            border: 2px dashed var(--border);
-            border-radius: var(--radius-sm);
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 12px;
-            position: relative;
-            overflow: hidden;
+        
+        .volume-group {
+            background: #0a0a0f;
+            border: 2px solid #2a2a3e;
+            border-radius: 24px;
+            padding: 18px;
+            margin-bottom: 20px;
         }
-
-        .upload-area:hover {
-            border-color: var(--accent);
-            background: rgba(108, 92, 231, 0.05);
-        }
-
-        .upload-area.has-video {
-            border-color: var(--success);
-            background: rgba(0, 184, 148, 0.05);
-        }
-
-        .upload-icon {
-            font-size: 32px;
+        
+        .volume-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 12px;
         }
-
-        .upload-text {
-            color: var(--text-secondary);
-            font-size: 13px;
+        
+        .volume-value {
+            color: #ff6b9d;
+            font-weight: bold;
+            font-size: 15px;
         }
-
-        .video-preview-mini {
+        
+        input[type="range"] {
             width: 100%;
-            max-height: 200px;
-            border-radius: var(--radius-sm);
-            margin-top: 12px;
-            object-fit: cover;
-            display: none;
+            -webkit-appearance: none;
+            height: 10px;
+            background: #2a2a3e;
+            border-radius: 25px;
+            outline: none;
         }
-
-        .video-preview-mini.show {
-            display: block;
-        }
-
-        .recognized-text {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            display: none;
-        }
-
-        .recognized-text.show {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .recognized-text .label {
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .materials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .material-item {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 11px;
-            color: var(--text-secondary);
-        }
-
-        .material-item:hover {
-            border-color: var(--accent);
-            background: var(--bg-card);
-            transform: scale(1.05);
-        }
-
-        .material-item.selected {
-            border-color: var(--accent);
-            background: rgba(108, 92, 231, 0.2);
-            color: var(--text-primary);
-        }
-
-        .material-item .icon {
-            font-size: 20px;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .primary-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #6c5ce7, #a55eea);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: var(--radius);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .primary-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(108, 92, 231, 0.4);
-        }
-
-        .primary-btn:active {
-            transform: scale(0.98);
-        }
-
-        .primary-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .loading-overlay {
-            display: none;
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .loading-overlay.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
             border-radius: 50%;
-            margin: 0 auto 20px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-top: 16px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 2px;
-            transition: width 0.3s ease;
-        }
-
-        .preview-container {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
-            overflow: hidden;
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-        }
-
-        .video-preview {
-            width: 100%;
-            aspect-ratio: 9/16;
-            background: #000;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .video-preview video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .play-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: rgba(108, 92, 231, 0.9);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10;
+            box-shadow: 0 0 25px rgba(255, 107, 157, 0.6);
         }
-
-        .play-overlay:hover {
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        .play-icon {
-            font-size: 24px;
-            margin-left: 4px;
-        }
-
-        .preview-info {
-            padding: 16px;
-        }
-
-        .preview-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .preview-stats {
-            display: flex;
-            gap: 16px;
-            color: var(--text-secondary);
-            font-size: 12px;
-            flex-wrap: wrap;
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .secondary-btn {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-            padding: 14px;
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .secondary-btn:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .success-btn {
-            background: var(--success);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .success-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 184, 148, 0.3);
-        }
-
-        .youtube-section {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-top: 16px;
-            border: 1px solid var(--border);
-        }
-
-        .youtube-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .youtube-title {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .youtube-badge {
-            background: #ff0000;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
-        .youtube-btn {
+        
+        .btn {
             width: 100%;
-            background: #ff0000;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .youtube-btn:hover {
-            background: #cc0000;
-            transform: translateY(-2px);
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--bg-card);
-            color: var(--text-primary);
-            padding: 14px 20px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            font-size: 14px;
-            transition: all 0.4s ease;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            pointer-events: none;
-            max-width: 90%;
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast-icon {
+            padding: 18px;
             font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+            margin-bottom: 12px;
         }
-
-        @media (min-width: 768px) {
-            .app-container {
-                max-width: 480px;
-                margin: 40px auto;
-                min-height: auto;
-                border-radius: var(--radius);
-                box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-            }
+        
+        .btn-speak {
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+        }
+        
+        .btn-speak:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.6);
+        }
+        
+        .btn-speak:active {
+            transform: scale(0.96);
+        }
+        
+        .btn-stop {
+            background: transparent;
+            color: #ff6b6b;
+            border: 2px solid #ff6b6b;
+            border-radius: 50px;
+        }
+        
+        .btn-stop:hover {
+            background: rgba(255, 107, 107, 0.1);
+        }
+        
+        .status {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 15px;
+            display: none;
+            padding: 12px;
+            border-radius: 50px;
+        }
+        
+        .status.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
+    <div class="container">
         <div class="header">
-            <div class="logo">AI<span>Video</span></div>
-            <div class="status-badge">
-                <span class="status-dot"></span>
-                Ready
-            </div>
+            <div class="icon">🎙️</div>
+            <h2>Озвучка текста</h2>
+            <p class="subtitle">Мягкий приятный женский голос</p>
         </div>
-
-        <!-- Input Screen -->
-        <div class="screen active" id="inputScreen">
-            <div class="input-section">
-                <div class="section-label">📝 Ваш текст</div>
-                <textarea class="text-input" id="textInput" placeholder="Введите текст или загрузите видео для распознавания..."></textarea>
-            </div>
-
-            <div class="input-section">
-                <div class="section-label">📤 Загрузить видео из галереи</div>
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">🎬</div>
-                    <div class="upload-text">Нажмите для выбора видео</div>
-                    <video class="video-preview-mini" id="videoPreviewMini" controls></video>
-                </div>
-                <input type="file" id="fileInput" accept="video/*" style="display: none;">
-                
-                <div class="recognized-text" id="recognizedText">
-                    <span class="label">🔍 Распознанный текст:</span>
-                    <div id="recognizedContent"></div>
-                </div>
-            </div>
-
-            <div class="input-section">
-                <div class="section-label">🎨 Выберите стиль</div>
-                <div class="materials-grid" id="materialsGrid">
-                    <div class="material-item selected" data-type="style" data-value="gradient">
-                        <span class="icon">🌈</span>
-                        Градиент
-                    </div>
-                    <div class="material-item" data-type="style" data-value="dark">
-                        <span class="icon">🌑</span>
-                        Тёмный
-                    </div>
-                    <div class="material-item" data-type="style" data-value="light">
-                        <span class="icon">☀️</span>
-                        Светлый
-                    </div>
-                    <div class="material-item" data-type="subtitle" data-value="bottom">
-                        <span class="icon">💬</span>
-                        Субтитры
-                    </div>
-                    <div class="material-item" data-type="effect" data-value="zoom">
-                        <span class="icon">🔍</span>
-                        Зум
-                    </div>
-                    <div class="material-item" data-type="effect" data-value="fade">
-                        <span class="icon">✨</span>
-                        Фейд
-                    </div>
-                </div>
-            </div>
-
-            <button class="primary-btn" id="createBtn">
-                ✨ Создать видео
-            </button>
+        
+        <div class="form-group">
+            <label class="label">Введите текст</label>
+            <textarea id="text" placeholder="Введите текст для озвучки..."></textarea>
         </div>
-
-        <!-- Loading Screen -->
-        <div class="loading-overlay" id="loadingScreen">
-            <div class="spinner"></div>
-            <h3>Обрабатываем видео...</h3>
-            <div class="loading-text" id="loadingStatus">Подготовка материалов</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        
+        <div class="volume-group">
+            <div class="volume-header">
+                <label class="label" style="margin: 0;">🔊 Громкость</label>
+                <span class="volume-value" id="volumeValue">100%</span>
             </div>
+            <input type="range" id="volume" min="0" max="100" step="5" value="100">
         </div>
-
-        <!-- Preview Screen -->
-        <div class="screen" id="previewScreen">
-            <div class="preview-container">
-                <div class="video-preview" id="videoPreview">
-                    <video id="videoElement" loop playsinline></video>
-                    <div class="play-overlay" id="playButton" onclick="togglePlay()">
-                        <span class="play-icon">▶</span>
-                    </div>
-                </div>
-                <div class="preview-info">
-                    <div class="preview-title">✨ Ваше видео готово!</div>
-                    <div class="preview-stats">
-                        <span>📱 1080x1920</span>
-                        <span id="durationStat">⏱ 0:05</span>
-                        <span id="styleStat">🎨 Градиент</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="action-buttons">
-                <button class="secondary-btn" onclick="showScreen('inputScreen')">
-                    ← Назад
-                </button>
-                <button class="success-btn" id="downloadBtn">
-                    ⬇ Скачать видео
-                </button>
-            </div>
-
-            <div class="youtube-section">
-                <div class="youtube-header">
-                    <div class="youtube-title">📺 Опубликовать на YouTube</div>
-                    <div class="youtube-badge">SHORTS</div>
-                </div>
-                <button class="youtube-btn" id="youtubeBtn">
-                    Подключить YouTube и опубликовать
-                </button>
-            </div>
-        </div>
-
-        <div class="toast" id="toast">
-            <span class="toast-icon">✓</span>
-            <span id="toastMessage">Готово!</span>
-        </div>
+        
+        <button class="btn btn-speak" onclick="speak()">🔊 Озвучить</button>
+        <button class="btn btn-stop" onclick="stop()">⏹️ Стоп</button>
+        
+        <div class="status" id="status"></div>
     </div>
-
+    
     <script>
-        class VideoProcessor {
-            constructor() {
-                this.canvas = document.createElement('canvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.mediaRecorder = null;
-                this.chunks = [];
-                this.videoBlob = null;
-                this.videoUrl = null;
-                this.animationId = null;
-                this.startTime = null;
-                this.duration = 5000;
-                this.fps = 30;
-                this.sourceVideo = null;
-                this.recognizedText = '';
-            }
-
-            async processVideo(videoFile, text, style, effect, showSubtitles) {
-                // Create source video element
-                this.sourceVideo = document.createElement('video');
-                this.sourceVideo.src = URL.createObjectURL(videoFile);
-                this.sourceVideo.muted = true;
-                this.sourceVideo.playsInline = true;
-                
-                await this.sourceVideo.play();
-                
-                // Set canvas size to 9:16
-                this.canvas.width = 1080;
-                this.canvas.height = 1920;
-                
-                // Extract frames from source video
-                const stream = this.canvas.captureStream(this.fps);
-                
-                // Setup MediaRecorder
-                const mimeType = this.getSupportedMimeType();
-                this.mediaRecorder = new MediaRecorder(stream, {
-                    mimeType: mimeType,
-                    videoBitsPerSecond: 5000000
-                });
-                
-                this.chunks = [];
-                
-                this.mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) {
-                        this.chunks.push(event.data);
-                    }
-                };
-                
-                this.mediaRecorder.onstop = () => {
-                    this.videoBlob = new Blob(this.chunks, { type: 'video/webm' });
-                    this.videoUrl = URL.createObjectURL(this.videoBlob);
-                    this.onVideoReady(this.videoUrl, this.videoBlob);
-                };
-                
-                // Start recording
-                this.mediaRecorder.start(100);
-                this.startTime = performance.now();
-                
-                // Start animation with source video
-                this.animateWithSource(text, style, effect, showSubtitles);
-            }
-
-            async recognizeTextFromVideo(videoFile) {
-                // Simulate text recognition from video
-                // In real implementation, this would use OCR or speech-to-text
-                
-                const mockTexts = [
-                    "Привет! Это видео из моей галереи",
-                    "Смотрите какое крутое видео я нашёл",
-                    "Автоматически распознанный текст из видео",
-                    "Подписывайтесь на канал!",
-                    "Этот текст был извлечён из видео"
-                ];
-                
-                // Simulate processing delay
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // Random text for demo
-                this.recognizedText = mockTexts[Math.floor(Math.random() * mockTexts.length)];
-                
-                // Update UI
-                document.getElementById('recognizedContent').textContent = this.recognizedText;
-                document.getElementById('recognizedText').classList.add('show');
-                
-                // Fill text input with recognized text
-                document.getElementById('textInput').value = this.recognizedText;
-                
-                return this.recognizedText;
-            }
-
-            animateWithSource(text, style, effect, showSubtitles) {
-                const ctx = this.ctx;
-                const canvas = this.canvas;
-                const sourceVideo = this.sourceVideo;
-                const duration = this.duration;
-                
-                const drawFrame = (timestamp) => {
-                    const elapsed = timestamp - this.startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    
-                    if (progress >= 1) {
-                        this.stop();
-                        return;
-                    }
-                    
-                    // Clear canvas
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    
-                    // Draw source video frame
-                    if (sourceVideo.readyState >= 2) {
-                        // Calculate scaling to fill 9:16
-                        const scale = Math.max(canvas.width / sourceVideo.videoWidth, 
-                                             canvas.height / sourceVideo.videoHeight);
-                        const width = sourceVideo.videoWidth * scale;
-                        const height = sourceVideo.videoHeight * scale;
-                        const x = (canvas.width - width) / 2;
-                        const y = (canvas.height - height) / 2;
-                        
-                        ctx.drawImage(sourceVideo, x, y, width, height);
-                        
-                        // Apply dark overlay for text readability
-                        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    }
-                    
-                    // Apply style overlay
-                    this.applyStyleOverlay(ctx, canvas, style, progress);
-                    
-                    // Apply effect
-                    this.applyEffect(ctx, canvas, effect, progress);
-                    
-                    // Draw text
-                    if (text) {
-                        this.drawText(ctx, canvas, text, progress);
-                    }
-                    
-                    // Draw subtitles
-                    if (showSubtitles && text) {
-                        this.drawSubtitles(ctx, canvas, text, progress);
-                    }
-                    
-                    // Draw watermark
-                    this.drawWatermark(ctx, canvas);
-                    
-                    // Schedule next frame
-                    if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
-                        this.animationId = requestAnimationFrame(drawFrame);
-                    }
-                };
-                
-                this.animationId = requestAnimationFrame(drawFrame);
-            }
-
-            applyStyleOverlay(ctx, canvas, style, progress) {
-                switch(style) {
-                    case 'gradient':
-                        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-                        gradient.addColorStop(0, 'rgba(108, 92, 231, 0.3)');
-                        gradient.addColorStop(0.5, 'rgba(165, 94, 234, 0.3)');
-                        gradient.addColorStop(1, 'rgba(253, 121, 168, 0.3)');
-                        ctx.fillStyle = gradient;
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        break;
-                    case 'dark':
-                        ctx.fillStyle = `rgba(0, 0, 0, ${0.3 + progress * 0.2})`;
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        break;
-                    case 'light':
-                        ctx.fillStyle = `rgba(255, 255, 255, ${0.1 + progress * 0.1})`;
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        break;
-                }
-            }
-
-            applyEffect(ctx, canvas, effect, progress) {
-                switch(effect) {
-                    case 'zoom':
-                        const zoomScale = 1 + progress * 0.15;
-                        ctx.save();
-                        ctx.translate(canvas.width / 2, canvas.height / 2);
-                        ctx.scale(zoomScale, zoomScale);
-                        ctx.translate(-canvas.width / 2, -canvas.height / 2);
-                        break;
-                    case 'fade':
-                        ctx.save();
-                        ctx.globalAlpha = Math.min(progress * 2, 1);
-                        break;
-                }
-            }
-
-            drawText(ctx, canvas, text, progress) {
-                ctx.save();
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
-                
-                ctx.fillStyle = 'white';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-                ctx.shadowBlur = 20;
-                ctx.shadowOffsetX = 2;
-                ctx.shadowOffsetY = 2;
-                
-                const words = text.split(' ');
-                const wordsPerSecond = 3;
-                const visibleWords = Math.floor(progress * this.duration / 1000 * wordsPerSecond);
-                const visibleText = words.slice(0, visibleWords).join(' ');
-                
-                if (visibleText) {
-                    const fontSize = Math.min(72, 1200 / visibleText.length * 3);
-                    ctx.font = `bold ${fontSize}px Arial, sans-serif`;
-                    
-                    const lines = this.wrapText(ctx, visibleText, canvas.width - 100);
-                    const lineHeight = fontSize * 1.3;
-                    const startY = canvas.height / 2 - (lines.length - 1) * lineHeight / 2;
-                    
-                    lines.forEach((line, index) => {
-                        ctx.fillText(line, canvas.width / 2, startY + index * lineHeight);
-                    });
-                }
-                
-                ctx.restore();
-            }
-
-            drawSubtitles(ctx, canvas, text, progress) {
-                ctx.save();
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
-                
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                ctx.fillRect(50, canvas.height - 200, canvas.width - 100, 100);
-                
-                ctx.fillStyle = 'white';
-                ctx.font = 'bold 36px Arial, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                
-                const words = text.split(' ');
-                const wordsPerSecond = 3;
-                const visibleWords = Math.floor(progress * this.duration / 1000 * wordsPerSecond);
-                const subtitleText = words.slice(0, visibleWords).join(' ');
-                
-                if (subtitleText) {
-                    ctx.fillText(subtitleText.substring(0, 40), canvas.width / 2, canvas.height - 150);
-                }
-                
-                ctx.restore();
-            }
-
-            drawWatermark(ctx, canvas) {
-                ctx.save();
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
-                
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                ctx.font = '24px Arial, sans-serif';
-                ctx.textAlign = 'right';
-                ctx.textBaseline = 'bottom';
-                ctx.fillText('AI Video Creator', canvas.width - 30, canvas.height - 30);
-                
-                ctx.restore();
-            }
-
-            wrapText(ctx, text, maxWidth) {
-                const words = text.split(' ');
-                const lines = [];
-                let currentLine = '';
-                
-                words.forEach(word => {
-                    const testLine = currentLine ? currentLine + ' ' + word : word;
-                    const metrics = ctx.measureText(testLine);
-                    
-                    if (metrics.width > maxWidth && currentLine) {
-                        lines.push(currentLine);
-                        currentLine = word;
-                    } else {
-                        currentLine = testLine;
-                    }
-                });
-                
-                if (currentLine) {
-                    lines.push(currentLine);
-                }
-                
-                return lines;
-            }
-
-            getSupportedMimeType() {
-                const types = [
-                    'video/webm;codecs=vp9',
-                    'video/webm;codecs=vp8',
-                    'video/webm',
-                    'video/mp4'
-                ];
-                
-                for (const type of types) {
-                    if (MediaRecorder.isTypeSupported(type)) {
-                        return type;
-                    }
-                }
-                
-                return 'video/webm';
-            }
-
-            stop() {
-                if (this.animationId) {
-                    cancelAnimationFrame(this.animationId);
-                    this.animationId = null;
-                }
-                
-                if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
-                    this.mediaRecorder.stop();
-                }
-                
-                if (this.sourceVideo) {
-                    this.sourceVideo.pause();
-                }
-            }
-
-            onVideoReady(url, blob) {
-                console.log('Video ready:', url, 'Size:', blob.size);
-            }
-
-            download(filename = 'processed-video.webm') {
-                if (this.videoBlob) {
-                    const url = URL.createObjectURL(this.videoBlob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }
-            }
+        document.getElementById('volume').oninput = function() {
+            document.getElementById('volumeValue').textContent = this.value + '%';
+        };
+        
+        function isEnglish(text) {
+            return /[a-zA-Z]/.test(text);
         }
-
-        // Application state
-        let currentScreen = 'inputScreen';
-        let isProcessing = false;
-        let selectedStyle = 'gradient';
-        let selectedEffect = 'fade';
-        let showSubtitles = true;
-        let videoProcessor = new VideoProcessor();
-        let uploadedVideoFile = null;
-
-        // DOM Elements
-        const textInput = document.getElementById('textInput');
-        const createBtn = document.getElementById('createBtn');
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const videoPreviewMini = document.getElementById('videoPreviewMini');
-        const recognizedText = document.getElementById('recognizedText');
-        const recognizedContent = document.getElementById('recognizedContent');
-        const loadingScreen = document.getElementById('loadingScreen');
-        const progressFill = document.getElementById('progressFill');
-        const loadingStatus = document.getElementById('loadingStatus');
-        const videoElement = document.getElementById('videoElement');
-        const playButton = document.getElementById('playButton');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const youtubeBtn = document.getElementById('youtubeBtn');
-        const toast = document.getElementById('toast');
-        const materialsGrid = document.getElementById('materialsGrid');
-        const durationStat = document.getElementById('durationStat');
-        const styleStat = document.getElementById('styleStat');
-
-        // Navigation
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            currentScreen = screenId;
+        
+        function speak() {
+            speechSynthesis.cancel();
             
-            if (screenId === 'inputScreen') {
-                loadingScreen.classList.remove('active');
-                if (videoElement.src) {
-                    videoElement.pause();
-                }
-            }
-        }
-
-        // Material selection
-        materialsGrid.addEventListener('click', function(e) {
-            const item = e.target.closest('.material-item');
-            if (!item) return;
+            var text = document.getElementById('text').value.trim();
             
-            const type = item.dataset.type;
-            const value = item.dataset.value;
-            
-            if (type === 'style') {
-                selectedStyle = value;
-                this.querySelectorAll('[data-type="style"]').forEach(el => el.classList.remove('selected'));
-                item.classList.add('selected');
-            } else if (type === 'effect') {
-                selectedEffect = value;
-                this.querySelectorAll('[data-type="effect"]').forEach(el => el.classList.remove('selected'));
-                item.classList.add('selected');
-            } else if (type === 'subtitle') {
-                showSubtitles = !showSubtitles;
-                if (showSubtitles) {
-                    item.classList.add('selected');
-                } else {
-                    item.classList.remove('selected');
-                }
-            }
-            
-            showToast(`Выбрано: ${item.textContent.trim()}`);
-        });
-
-        // File upload
-        uploadArea.addEventListener('click', () => fileInput.click());
-
-        fileInput.addEventListener('change', async function(e) {
-            const file = this.files[0];
-            if (file && file.type.startsWith('video/')) {
-                uploadedVideoFile = file;
-                
-                // Show video preview
-                const videoUrl = URL.createObjectURL(file);
-                videoPreviewMini.src = videoUrl;
-                videoPreviewMini.classList.add('show');
-                uploadArea.classList.add('has-video');
-                
-                // Update upload area
-                uploadArea.innerHTML = `
-                    <div class="upload-icon">✅</div>
-                    <div class="upload-text">${file.name}</div>
-                    <video class="video-preview-mini show" id="videoPreviewMini" controls></video>
-                `;
-                
-                // Re-get the video element
-                const newVideoPreview = document.getElementById('videoPreviewMini');
-                newVideoPreview.src = videoUrl;
-                
-                showToast('Видео загружено! Распознаю текст...');
-                
-                // Recognize text from video
-                await videoProcessor.recognizeTextFromVideo(file);
-                
-                showToast('Текст распознан!');
-            }
-        });
-
-        // Create video
-        createBtn.addEventListener('click', function() {
-            if (!uploadedVideoFile) {
-                showToast('Пожалуйста, загрузите видео из галереи');
+            if (!text) {
+                showStatus('Введите текст!', '#ff6b6b');
                 return;
             }
             
-            startVideoProcessing();
-        });
-
-        function startVideoProcessing() {
-            isProcessing = true;
-            createBtn.disabled = true;
-            loadingScreen.classList.add('active');
+            var volume = parseInt(document.getElementById('volume').value) / 100;
             
-            const steps = [
-                'Анализ видео...',
-                'Распознавание текста...',
-                'Применение стиля...',
-                'Добавление субтитров...',
-                'Применение эффектов...',
-                'Обработка видео...'
-            ];
+            var utterance = new SpeechSynthesisUtterance(text);
             
-            let currentStep = 0;
-            let progress = 0;
+            if (isEnglish(text)) {
+                utterance.lang = 'en-US';
+            } else {
+                utterance.lang = 'ru-RU';
+            }
             
-            const progressInterval = setInterval(() => {
-                if (currentStep < steps.length) {
-                    loadingStatus.textContent = steps[currentStep];
-                    progress += 15;
-                    progressFill.style.width = `${Math.min(progress, 90)}%`;
-                    currentStep++;
-                } else {
-                    clearInterval(progressInterval);
-                    processVideo();
-                }
-            }, 300);
-        }
-
-        async function processVideo() {
-            const text = textInput.value.trim();
+            utterance.pitch = 1.35;
+            utterance.rate = 0.95;
+            utterance.volume = volume;
             
-            videoProcessor.onVideoReady = function(url, blob) {
-                progressFill.style.width = '100%';
-                loadingStatus.textContent = 'Готово!';
-                
-                setTimeout(() => {
-                    loadingScreen.classList.remove('active');
-                    showScreen('previewScreen');
-                    createBtn.disabled = false;
-                    isProcessing = false;
-                    
-                    videoElement.src = url;
-                    videoElement.load();
-                    
-                    const duration = Math.round(blob.size / 1024);
-                    durationStat.textContent = `⏱ 0:05 • ${duration}KB`;
-                    styleStat.textContent = `🎨 ${selectedStyle}`;
-                    
-                    showToast('Видео успешно обработано!');
-                }, 500);
+            showStatus('🔊 Озвучивание...', '#ff6b9d');
+            
+            utterance.onend = function() {
+                showStatus('✅ Готово!', '#00b894');
             };
             
-            await videoProcessor.processVideo(uploadedVideoFile, text, selectedStyle, selectedEffect, showSubtitles);
+            utterance.onerror = function() {
+                showStatus('❌ Ошибка', '#ff6b6b');
+            };
+            
+            speechSynthesis.speak(utterance);
         }
-
-        // Video playback
-        function togglePlay() {
-            if (videoElement.paused) {
-                videoElement.play();
-                playButton.style.display = 'none';
-            } else {
-                videoElement.pause();
-                playButton.style.display = 'flex';
-            }
+        
+        function stop() {
+            speechSynthesis.cancel();
+            showStatus('⏹️ Остановлено', '#a0a0b8');
         }
-
-        videoElement.addEventListener('play', () => {
-            playButton.style.display = 'none';
-        });
-
-        videoElement.addEventListener('pause', () => {
-            playButton.style.display = 'flex';
-        });
-
-        videoElement.addEventListener('ended', () => {
-            playButton.style.display = 'flex';
-        });
-
-        // Download
-        downloadBtn.addEventListener('click', function() {
-            if (videoProcessor.videoBlob) {
-                videoProcessor.download('processed-video.webm');
-                showToast('Видео скачивается...');
-            } else {
-                showToast('Видео ещё не готово');
-            }
-        });
-
-        // YouTube
-        youtubeBtn.addEventListener('click', function() {
-            showToast('Подключение к YouTube...');
-            
-            setTimeout(() => {
-                showToast('YouTube подключен! (Demo)');
-                
-                const text = textInput.value.trim();
-                const title = `${text.substring(0, 40)} | #Shorts`;
-                const description = `Автоматически обработанное видео\n\n${text}\n\n#ai #video #shorts`;
-                
-                console.log('YouTube Publishing:', { title, description });
-            }, 1500);
-        });
-
-        // Toast
-        function showToast(message) {
-            const toastElement = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            toastMessage.textContent = message;
-            
-            toastElement.classList.add('show');
-            
-            clearTimeout(toastElement._timeout);
-            toastElement._timeout = setTimeout(() => {
-                toastElement.classList.remove('show');
-            }, 3000);
+        
+        function showStatus(message, color) {
+            var status = document.getElementById('status');
+            status.textContent = message;
+            status.style.color = color;
+            status.classList.add('show');
         }
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-                if (currentScreen === 'inputScreen' && !isProcessing) {
-                    createBtn.click();
-                }
-            }
-            
-            if (e.key === 'Escape' && currentScreen === 'previewScreen') {
-                showScreen('inputScreen');
-            }
-        });
-
-        // Initialize
-        console.log('AI Video Creator initialized with smart video processing');
-        console.log('Features: Video upload, text recognition, real video processing');
     </script>
 </body>
 </html>
